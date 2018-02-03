@@ -1,0 +1,28 @@
+version: "2"
+
+services:
+  prepaid-svc:
+    image: richardcase/casecardgo-prepaidsvc
+    networks:
+      - backend
+    depends_on:
+      - redis
+      - mongo
+
+  redis:
+    image: redis
+    ports: 
+      - "6379"
+    networks:
+      - backend
+
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    networks:
+      - backend
+
+networks:
+  backend:
+  frontend:

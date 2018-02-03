@@ -1,0 +1,26 @@
+language: go
+go: 1.9.1
+install: 
+  - make setup
+script: 
+  - make ci 
+  - make build-prod
+after_success:
+    - export REPO_REPAIDSVC=richardcase/casecardgo-prepaidsvc
+    - export REPO_PROJSVC=richardcase/casecardgo-projectionsvc
+    - export VERSION=`cat ./VERSION`
+    - export BUILDDATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"`
+    - echo $VERSION
+    - echo $BUILDDATE
+    - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+    - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+    - docker build -f  Dockerfile-prepaidsvc -t $REPO_REPAIDSVC:$COMMIT --build-arg BUILD_DATE=$BUILDDATE --build-arg VCS_REF=$COMMIT --build-arg VERSION=$VERSION .
+    - docker tag $REPO_REPAIDSVC:$COMMIT $REPO_REPAIDSVC:$TAG
+    - docker tag $REPO_REPAIDSVC:$COMMIT $REPO_REPAIDSVC:travis-$TRAVIS_BUILD_NUMBER
+    - docker tag $REPO_REPAIDSVC:$COMMIT $REPO_REPAIDSVC:$VERSION
+    - docker push $REPO_REPAIDSVC
+    - docker build -f  Dockerfile-projectionsvc -t $REPO_PROJSVC:$COMMIT --build-arg BUILD_DATE=$BUILDDATE --build-arg VCS_REF=$COMMIT --build-arg VERSION=$VERSION .
+    - docker tag $REPO_PROJSVC:$COMMIT $REPO_PROJSVC:$TAG
+    - docker tag $REPO_PROJSVC:$COMMIT $REPO_PROJSVC:travis-$TRAVIS_BUILD_NUMBER
+    - docker tag $REPO_PROJSVC:$COMMIT $REPO_PROJSVC:$VERSION
+    - docker push $REPO_PROJSVC
