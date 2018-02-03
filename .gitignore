@@ -14,5 +14,7 @@
 .glide/
 
 debug
+prepaid-projector
+prepaid-svc
 
 vendor/
