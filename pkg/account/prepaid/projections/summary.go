@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/shopspring/decimal"
-
 	eh "github.com/looplab/eventhorizon"
 	"github.com/looplab/eventhorizon/eventhandler/projector"
 	evts "github.com/richardcase/casecardgo/pkg/account/prepaid/events"
@@ -18,9 +16,9 @@ type PrepaidAccountSummary struct {
 
 	CardNumber string
 
-	AvailableBalance decimal.Decimal
-	BlockedAmount    decimal.Decimal
-	TotalLoaded      decimal.Decimal
+	AvailableBalance float64
+	BlockedAmount    float64
+	TotalLoaded      float64
 
 	LastActivity time.Time
 }
@@ -67,8 +65,8 @@ func (p *PrepaidAccountSummaryProjector) Project(ctx context.Context, event eh.E
 		if !ok {
 			return nil, fmt.Errorf("Projector: invalid event data type: %v", event.Data())
 		}
-		summary.AvailableBalance.Add(data.Amount)
-		summary.TotalLoaded.Add(data.Amount)
+		summary.AvailableBalance += data.Amount
+		summary.TotalLoaded += data.Amount
 
 	default:
 		return nil, fmt.Errorf("Projector: could not handle event: %s", event.String())

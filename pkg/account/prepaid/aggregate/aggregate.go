@@ -9,7 +9,6 @@ import (
 	"github.com/dmgk/faker"
 	eh "github.com/looplab/eventhorizon"
 	"github.com/looplab/eventhorizon/aggregatestore/events"
-	"github.com/shopspring/decimal"
 
 	"github.com/richardcase/casecardgo/pkg/account/prepaid"
 	cmds "github.com/richardcase/casecardgo/pkg/account/prepaid/commands"
@@ -31,8 +30,8 @@ type PrePaidAccountAggregate struct {
 	cardNumber    string
 	openedOn      time.Time
 
-	available decimal.Decimal
-	blocked   decimal.Decimal
+	available float64
+	blocked   float64
 
 	//TODO: finish this add blocks
 }
@@ -67,7 +66,7 @@ func (a *PrePaidAccountAggregate) ApplyEvent(ctc context.Context, event eh.Event
 		}
 	case evts.AccountToppedUp:
 		if data, ok := event.Data().(*evts.AccountToppedUpData); ok {
-			a.available.Add(data.Amount)
+			a.available += data.Amount
 		} else {
 			return fmt.Errorf("invalid event data type: %s", event.Data())
 		}
@@ -91,7 +90,7 @@ func (a *PrePaidAccountAggregate) handleAccountOpen(cmd *cmds.OpenAccount) error
 }
 
 func (a *PrePaidAccountAggregate) handleTopup(cmd *cmds.TopupAccount) error {
-	if cmd.Amount.LessThanOrEqual(decimal.NewFromFloat(0)) {
+	if cmd.Amount <= 0.0 {
 		return fmt.Errorf("Topup must be for a positive amount")
 	}
 

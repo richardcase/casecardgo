@@ -88,6 +88,16 @@ func NewPrepaidService(
 	h.Handle("/api/prepaid/open", httputils.CommandHandler(loggingHandler, cmds.OpenAccountCommand))
 	h.Handle("/api/prepaid/topup", httputils.CommandHandler(loggingHandler, cmds.TopupAccountCommand))
 
+	/*router := mux.NewRouter()
+	router.HandleFunc("/api/prepaid/topup/{id}", func(w http.ResponseWriter, r *http.Request) {
+		var cmd cmds.TopupAccount
+		_ = json.NewDecoder(r.Body).Decode(&cmd)
+		if err := loggingHandler.HandleCommand(context.Background(), &cmd); err != nil {
+			http.Error(w, "could not handle command: "+err.Error(), http.StatusBadRequest)
+			return
+		}
+	}).Methods("POST")*/
+
 	logger := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		glog.Infof("Received HTTP request %s %s", r.Method, r.URL)
 		h.ServeHTTP(w, r)

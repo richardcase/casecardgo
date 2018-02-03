@@ -34,7 +34,6 @@ lint: ## Run all the linters
 		--enable=staticcheck \
 		--enable=gofmt \
 		--enable=goimports \
-		--enable=dupl \
 		--enable=misspell \
 		--enable=errcheck \
 		--enable=vet \
@@ -50,7 +49,6 @@ lint: ## Run all the linters
 		--enable=staticcheck \
 		--enable=gofmt \
 		--enable=goimports \
-		--enable=dupl \
 		--enable=misspell \
 		--enable=errcheck \
 		--enable=vet \

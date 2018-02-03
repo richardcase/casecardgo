@@ -2,7 +2,6 @@ package events
 
 import (
 	eh "github.com/looplab/eventhorizon"
-	"github.com/shopspring/decimal"
 )
 
 const AccountToppedUp = eh.EventType("prepaid:topped_up")
@@ -14,6 +13,6 @@ func init() {
 }
 
 type AccountToppedUpData struct {
-	ID     int             `json:"id" bson:"id"`
-	Amount decimal.Decimal `json:"amount" bson:"amount"`
+	ID     int     `json:"id" bson:"id"`
+	Amount float64 `json:"amount" bson:"amount"`
 }

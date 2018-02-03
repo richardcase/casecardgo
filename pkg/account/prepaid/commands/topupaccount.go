@@ -3,7 +3,6 @@ package commands
 import (
 	eh "github.com/looplab/eventhorizon"
 	"github.com/richardcase/casecardgo/pkg/account/prepaid"
-	"github.com/shopspring/decimal"
 )
 
 func init() {
@@ -15,8 +14,8 @@ const TopupAccountCommand = eh.CommandType("prepaid:topup")
 var _ = eh.Command(&TopupAccount{})
 
 type TopupAccount struct {
-	ID     eh.UUID         `json:"id"`
-	Amount decimal.Decimal `json:"amount" bson:"amount"`
+	ID     eh.UUID `json:"id"`
+	Amount float64 `json:"amount" bson:"amount"`
 }
 
 func (c *TopupAccount) AggregateType() eh.AggregateType { return prepaid.PrePaidAccountAggregateType }
