@@ -6,7 +6,7 @@ services:
     entrypoint:
       - /app/prepaid-svc
       - -mongourl 
-      - mongo:27107
+      - mongo:27017
       - -natsurl 
       - nats://nats:4222
       - -alsologtostderr
@@ -25,7 +25,7 @@ services:
     entrypoint:
       - /app/prepaid-projector
       - -mongourl 
-      - mongo:27107
+      - mongo:27017
       - -natsurl 
       - nats://nats:4222
       - -alsologtostderr
