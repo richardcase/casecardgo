@@ -8,7 +8,7 @@ RUN make setup && make build-prod
 FROM alpine:latest
 RUN apk --no-cache add ca-certificates
 
-COPY --from=builder /go/src/github.com/richardcase/casecardgo/prepaid-projector /app/prepaid-projectorc
+COPY --from=builder /go/src/github.com/richardcase/casecardgo/prepaid-projector /app/prepaid-projector
 ENTRYPOINT /app/prepaid-projector
 
 # Build-time metadata as defined at http://label-schema.org
