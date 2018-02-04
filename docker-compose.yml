@@ -6,13 +6,24 @@ services:
     networks:
       - backend
     depends_on:
-      - redis
+      - nats
+      - mongo
+  
+  projection-svc:
+    image: richardcase/casecardgo-projsvc
+    networks:
+      - backend
+      - frontend
+    depends_on:
+      - nats
       - mongo
 
-  redis:
-    image: redis
+  nats:
+    image: nats
     ports: 
-      - "6379"
+      - "4222:4222"
+      - "6222:6222"
+      - "8222:8222"
     networks:
       - backend
 

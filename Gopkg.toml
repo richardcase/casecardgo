@@ -25,8 +25,8 @@
   name = "github.com/looplab/eventhorizon"
 
 [[constraint]]
-  name = "github.com/shopspring/decimal"
-  version = "1.0.0"
+  name = "github.com/leekchan/accounting"
+  branch = "master"
 
 [[constraint]]
   branch = "master"
@@ -43,3 +43,7 @@
 [[constraint]]
   name = "github.com/gorilla/mux"
   version = "1.6.1"
+
+[[constraint]]
+  name = "github.com/nats-io/go-nats"
+  version = "1.4.0"

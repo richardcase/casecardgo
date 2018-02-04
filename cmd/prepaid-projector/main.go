@@ -10,7 +10,7 @@ import (
 
 var (
 	mongoURL      string
-	redisServer   string
+	natsURL       string
 	listenAddress string
 )
 
@@ -20,7 +20,7 @@ func main() {
 	glog.Info("Starting prepaid card projection service.....")
 	version.OutputVersion()
 
-	projectionSvc, err := service.NewProjectionService(mongoURL, redisServer)
+	projectionSvc, err := service.NewProjectionService(mongoURL, natsURL)
 	if err != nil {
 		glog.Fatalf("Error creating projection service: %s", err.Error())
 	}
@@ -32,6 +32,6 @@ func main() {
 
 func init() {
 	flag.StringVar(&mongoURL, "mongourl", "localhost:27017", "The mongo URL")
-	flag.StringVar(&redisServer, "redis-server", "localhost:6379", "The redis URL")
+	flag.StringVar(&natsURL, "natsurl", "nats://localhost:4222", "The NATS URL")
 	flag.StringVar(&listenAddress, "listen-addr", ":8081", "The address/port to listen on")
 }

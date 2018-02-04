@@ -13,11 +13,11 @@ import (
 	eventbus "github.com/looplab/eventhorizon/eventbus/local"
 	eventstore "github.com/looplab/eventhorizon/eventstore/mongodb"
 	"github.com/looplab/eventhorizon/httputils"
-	eventpublisher "github.com/looplab/eventhorizon/publisher/redis"
 	"github.com/richardcase/casecardgo/pkg/account/prepaid"
 	agg "github.com/richardcase/casecardgo/pkg/account/prepaid/aggregate"
 	cmds "github.com/richardcase/casecardgo/pkg/account/prepaid/commands"
 	"github.com/richardcase/casecardgo/pkg/log"
+	eventpublisher "github.com/richardcase/casecardgo/pkg/publisher/nats"
 )
 
 type PrepaidService struct {
@@ -28,7 +28,7 @@ type PrepaidService struct {
 
 func NewPrepaidService(
 	mongoURL string,
-	redisURL string) (*PrepaidService, error) {
+	natsURL string) (*PrepaidService, error) {
 
 	// Explcitly register aggregate
 	eh.RegisterAggregate(func(id eh.UUID) eh.Aggregate {
@@ -43,7 +43,7 @@ func NewPrepaidService(
 
 	// Create a the bus to distribute events
 	eventBus := eventbus.NewEventBus()
-	eventPublisher, err := eventpublisher.NewEventPublisher("casecard", redisURL, "")
+	eventPublisher, err := eventpublisher.NewEventPublisher("casecard", natsURL)
 	if err != nil {
 		return nil, fmt.Errorf("Error creating event publisher: %s", err)
 	}
@@ -81,12 +81,17 @@ func NewPrepaidService(
 	if err != nil {
 		return nil, fmt.Errorf("Unable to set command handler: %s", err)
 	}
+	err = commandBus.SetHandler(loggingHandler, cmds.AuthorizationRequestCommand)
+	if err != nil {
+		return nil, fmt.Errorf("Unable to set command handler: %s", err)
+	}
 
 	// Setup the HTTP handler
 	h := http.NewServeMux()
 	h.Handle("/dbg/events/", httputils.EventBusHandler(eventPublisher))
 	h.Handle("/api/prepaid/open", httputils.CommandHandler(loggingHandler, cmds.OpenAccountCommand))
 	h.Handle("/api/prepaid/topup", httputils.CommandHandler(loggingHandler, cmds.TopupAccountCommand))
+	h.Handle("/api/prepaid/authorize", httputils.CommandHandler(loggingHandler, cmds.AuthorizationRequestCommand))
 
 	/*router := mux.NewRouter()
 	router.HandleFunc("/api/prepaid/topup/{id}", func(w http.ResponseWriter, r *http.Request) {

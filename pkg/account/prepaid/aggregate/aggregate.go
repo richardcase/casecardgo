@@ -50,6 +50,8 @@ func (a *PrePaidAccountAggregate) HandleCommand(ctx context.Context, cmd eh.Comm
 		return a.handleAccountOpen(cmd)
 	case *cmds.TopupAccount:
 		return a.handleTopup(cmd)
+	case *cmds.AuthorizationRequest:
+		return a.handleAuthorize(cmd)
 	}
 	return ErrUnknownCommand
 }
@@ -70,6 +72,13 @@ func (a *PrePaidAccountAggregate) ApplyEvent(ctc context.Context, event eh.Event
 		} else {
 			return fmt.Errorf("invalid event data type: %s", event.Data())
 		}
+	case evts.AuthorizationApproved:
+		if data, ok := event.Data().(*evts.AuthorizationApprovedData); ok {
+			a.available -= data.Amount
+			a.blocked += data.Amount
+		} else {
+			return fmt.Errorf("invalid event data type: %s", event.Data())
+		}
 	}
 	return nil
 }
@@ -81,6 +90,7 @@ func (a *PrePaidAccountAggregate) handleAccountOpen(cmd *cmds.OpenAccount) error
 	a.StoreEvent(evts.AccountOpened,
 		&evts.AccountOpenedData{
 			AccountHolder: cmd.AccountHolder,
+			Address:       cmd.Address,
 			CardNumber:    faker.Business().CreditCardNumber(),
 			OpenedOn:      time.Now(),
 		}, time.Now(),
@@ -97,6 +107,27 @@ func (a *PrePaidAccountAggregate) handleTopup(cmd *cmds.TopupAccount) error {
 	a.StoreEvent(evts.AccountToppedUp,
 		&evts.AccountToppedUpData{
 			Amount: cmd.Amount,
+			Source: cmd.Source,
+		}, time.Now(),
+	)
+
+	return nil
+}
+
+func (a *PrePaidAccountAggregate) handleAuthorize(cmd *cmds.AuthorizationRequest) error {
+	if cmd.Amount < 0.0 {
+		return fmt.Errorf("Authorize request must be for a positive amount")
+	}
+	if cmd.Amount > a.available {
+		//TODO: Format and also capture decline event
+		return fmt.Errorf("Available funds insufficient to authorize request of %f", cmd.Amount)
+	}
+
+	a.StoreEvent(evts.AuthorizationApproved,
+		&evts.AuthorizationApprovedData{
+			Amount:          cmd.Amount,
+			MerchantId:      cmd.MerchantId,
+			AuthorizationId: eh.NewUUID(),
 		}, time.Now(),
 	)
 

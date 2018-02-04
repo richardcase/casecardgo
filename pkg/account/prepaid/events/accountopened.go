@@ -15,8 +15,9 @@ func init() {
 }
 
 type AccountOpenedData struct {
-	ID            int       `json:"id" bson:"id"`
+	//ID            int       `json:"id" bson:"id"`
 	AccountHolder string    `json:"accountholder" bson:"accountholder"`
+	Address       string    `json:"address" bson:"address"`
 	CardNumber    string    `json:"cardnumber" bson:"cardnumber"`
 	OpenedOn      time.Time `json:"openedon" bson:"openedon"`
 }

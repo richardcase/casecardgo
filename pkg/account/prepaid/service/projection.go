@@ -1,6 +1,7 @@
 package service
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 
@@ -10,11 +11,11 @@ import (
 	eh "github.com/looplab/eventhorizon"
 	eventbus "github.com/looplab/eventhorizon/eventbus/local"
 	"github.com/looplab/eventhorizon/httputils"
-	eventpublisher "github.com/looplab/eventhorizon/publisher/redis"
 	repo "github.com/looplab/eventhorizon/repo/mongodb"
 	evts "github.com/richardcase/casecardgo/pkg/account/prepaid/events"
 	"github.com/richardcase/casecardgo/pkg/account/prepaid/projections"
 	"github.com/richardcase/casecardgo/pkg/log"
+	eventpublisher "github.com/richardcase/casecardgo/pkg/publisher/nats"
 )
 
 type ProjectionService struct {
@@ -25,19 +26,18 @@ type ProjectionService struct {
 
 func NewProjectionService(
 	mongoURL string,
-	redisURL string) (*ProjectionService, error) {
+	natsURL string) (*ProjectionService, error) {
 
 	// Create the repo view
 	summaryRepo, err := repo.NewRepo(mongoURL, "prepaid", "summary")
 	if err != nil {
 		return nil, fmt.Errorf("Could not create repo: %s", err)
 	}
-
-	// Create redis pool
+	summaryRepo.SetEntityFactory(func() eh.Entity { return &projections.PrepaidAccountSummary{} })
 
 	// Create a the bus to distribute events
 	eventBus := eventbus.NewEventBus()
-	eventPublisher, err := eventpublisher.NewEventPublisher("casecard", redisURL, "")
+	eventPublisher, err := eventpublisher.NewEventPublisher("casecard", natsURL)
 	if err != nil {
 		return nil, fmt.Errorf("Error creating event publisher: %s", err)
 	}
@@ -53,6 +53,9 @@ func NewProjectionService(
 
 	summaryProjector.SetEntityFactory(func() eh.Entity { return &projections.PrepaidAccountSummary{} })
 	addHandlers(summaryProjector, eventBus)
+
+	// HACK: This is a hack as the projection logic doesn't work
+	eventPublisher.AddObserver(&projectorWithObserver{handler: summaryProjector})
 
 	// Setup the HTTP handler
 	h := http.NewServeMux()
@@ -85,4 +88,16 @@ func (s *ProjectionService) Run(listenAddress string) error {
 func addHandlers(projector eh.EventHandler, evtbus eh.EventBus) {
 	evtbus.AddHandler(projector, evts.AccountOpened)
 	evtbus.AddHandler(projector, evts.AccountToppedUp)
+}
+
+// this is a hack as projects don't work
+type projectorWithObserver struct {
+	handler eh.EventHandler
+}
+
+func (p *projectorWithObserver) Notify(ctx context.Context, event eh.Event) {
+	err := p.handler.HandleEvent(ctx, event)
+	if err != nil {
+		glog.Errorf("Error handling event in projection: %s", err.Error())
+	}
 }

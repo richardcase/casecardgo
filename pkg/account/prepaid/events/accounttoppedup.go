@@ -13,6 +13,7 @@ func init() {
 }
 
 type AccountToppedUpData struct {
-	ID     int     `json:"id" bson:"id"`
+	//ID     int     `json:"id" bson:"id"`
 	Amount float64 `json:"amount" bson:"amount"`
+	Source string  `json:"source" bson:"source"`
 }

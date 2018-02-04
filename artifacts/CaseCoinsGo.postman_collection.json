@@ -1,0 +1,71 @@
+{
+	"variables": [],
+	"info": {
+		"name": "CaseCoinsGo",
+		"_postman_id": "83b93224-d633-a52a-d337-2e039c005ec8",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Account Open",
+			"request": {
+				"url": "http://localhost:8080/api/prepaid/open",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\": \"40b557cb-43f1-4d2c-875c-589f263f8bd2\",\n\t\"accountholder\": \"Richard Case\",\n\t\"address\": \"10 Bow Lane, London, EC5R 5TG\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Topup",
+			"request": {
+				"url": "http://localhost:8080/api/prepaid/topup",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\": \"40b557cb-43f1-4d2c-875c-589f263f8bd2\",\n\t\"amount\": 100.0,\n\t\"source\": \"ApplePay\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Auth Request",
+			"request": {
+				"url": "http://localhost:8080/api/prepaid/authorize",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/javascript",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\": \"40b557cb-43f1-4d2c-875c-589f263f8bd2\",\n\t\"amount\": 50.0,\n\t\"merchantid\": \"M12345\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

@@ -16,6 +16,7 @@ var _ = eh.Command(&TopupAccount{})
 type TopupAccount struct {
 	ID     eh.UUID `json:"id"`
 	Amount float64 `json:"amount" bson:"amount"`
+	Source string  `json:"source" bson:"source"`
 }
 
 func (c *TopupAccount) AggregateType() eh.AggregateType { return prepaid.PrePaidAccountAggregateType }

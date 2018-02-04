@@ -10,5 +10,5 @@ import (
 type EventLogger struct{}
 
 func (l *EventLogger) Notify(ctx context.Context, event eh.Event) {
-	glog.V(2).Infof("Event: %v", event)
+	glog.Infof("Event: %v", event)
 }

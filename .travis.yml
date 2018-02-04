@@ -7,7 +7,7 @@ script:
   - make build-prod
 after_success:
     - export REPO_REPAIDSVC=richardcase/casecardgo-prepaidsvc
-    - export REPO_PROJSVC=richardcase/casecardgo-projectionsvc
+    - export REPO_PROJSVC=richardcase/casecardgo-projsvc
     - export VERSION=`cat ./VERSION`
     - export BUILDDATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"`
     - echo $VERSION

@@ -16,6 +16,7 @@ var _ = eh.Command(&OpenAccount{})
 type OpenAccount struct {
 	ID            eh.UUID `json:"id"`
 	AccountHolder string  `json:"accountholder" bson:"accountholder"`
+	Address       string  `json:"address" bson:"address"`
 }
 
 func (c *OpenAccount) AggregateType() eh.AggregateType { return prepaid.PrePaidAccountAggregateType }

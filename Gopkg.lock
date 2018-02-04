@@ -4,18 +4,12 @@
 [[projects]]
   branch = "master"
   name = "github.com/dmgk/faker"
-  packages = [
-    ".",
-    "locales"
-  ]
+  packages = [".","locales"]
   revision = "854b4c67597c9b22b92860db2650cad35d337269"
 
 [[projects]]
   name = "github.com/garyburd/redigo"
-  packages = [
-    "internal",
-    "redis"
-  ]
+  packages = ["internal","redis"]
   revision = "d1ed5c67e5794de818ea85e6b522fda02623a484"
   version = "v1.4.0"
 
@@ -24,18 +18,6 @@
   name = "github.com/golang/glog"
   packages = ["."]
   revision = "23def4e6c14b4da8ac2ed8007337bc5eb5007998"
-
-[[projects]]
-  name = "github.com/gorilla/context"
-  packages = ["."]
-  revision = "1ea25387ff6f684839d82767c1733ff4d4d15d0a"
-  version = "v1.1"
-
-[[projects]]
-  name = "github.com/gorilla/mux"
-  packages = ["."]
-  revision = "53c1911da2b537f792e7cafcb446b05ffe33b996"
-  version = "v1.6.1"
 
 [[projects]]
   name = "github.com/gorilla/websocket"
@@ -52,42 +34,30 @@
 [[projects]]
   branch = "master"
   name = "github.com/looplab/eventhorizon"
-  packages = [
-    ".",
-    "aggregatestore/events",
-    "commandhandler/aggregate",
-    "commandhandler/bus",
-    "eventbus/local",
-    "eventhandler/projector",
-    "eventstore/mongodb",
-    "httputils",
-    "publisher/local",
-    "publisher/redis",
-    "repo/mongodb"
-  ]
+  packages = [".","aggregatestore/events","commandhandler/aggregate","commandhandler/bus","eventbus/local","eventhandler/projector","eventstore/mongodb","httputils","publisher/local","publisher/redis","repo/mongodb"]
   revision = "5020eeaa3b3eee71ee48155a9764fe83395f8d06"
 
 [[projects]]
-  name = "github.com/shopspring/decimal"
+  name = "github.com/nats-io/go-nats"
+  packages = [".","encoders/builtin","util"]
+  revision = "d66cb54e6b7bdd93f0b28afc8450d84c780dfb68"
+  version = "v1.4.0"
+
+[[projects]]
+  name = "github.com/nats-io/nuid"
   packages = ["."]
-  revision = "9ca7f51822d222ae4e246f070f9aad863599bd1a"
-  version = "1.0.0"
+  revision = "289cccf02c178dc782430d534e3c1f5b72af807f"
+  version = "v1.0.0"
 
 [[projects]]
   branch = "v2"
   name = "gopkg.in/mgo.v2"
-  packages = [
-    ".",
-    "bson",
-    "internal/json",
-    "internal/sasl",
-    "internal/scram"
-  ]
+  packages = [".","bson","internal/json","internal/sasl","internal/scram"]
   revision = "3f83fa5005286a7fe593b055f0d7771a7dce4655"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "fd9eab471b826224ec3a51766cd26e6f8db0364850a9cd302c5274a59482d8fa"
+  inputs-digest = "922c06555f87ed41021336a65de1d6c8dd9299e55cf4ac5264d1dde0ece29341"
   solver-name = "gps-cdcl"
   solver-version = 1
