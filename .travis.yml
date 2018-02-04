@@ -24,3 +24,7 @@ after_success:
     - docker tag $REPO_PROJSVC:$COMMIT $REPO_PROJSVC:travis-$TRAVIS_BUILD_NUMBER
     - docker tag $REPO_PROJSVC:$COMMIT $REPO_PROJSVC:$VERSION
     - docker push $REPO_PROJSVC
+
+env:
+    global:
+        - COMMIT=${TRAVIS_COMMIT::8}
