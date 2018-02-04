@@ -63,16 +63,14 @@ build: ## Build a beta version
 	go build -o prepaid-projector ./cmd/prepaid-projector/.
 
 build-prod: ## Build the production version
-	GOOS=linux go build -a \
-		--ldflags '-extldflags "-static" $(FLAGS)' \
-		-tags netgo \
-		-installsuffix netgo \
+	GOOS=linux CGO_ENABLED=0 go build -a \
+		--ldflags '$(FLAGS)' \
+		-installsuffix cgo \
 		-o prepaid-svc \
 		./cmd/prepaid-svc/main.go
-	GOOS=linux go build -a \
-		--ldflags '-extldflags "-static" $(FLAGS)' \
-		-tags netgo \
-		-installsuffix netgo \
+	GOOS=linux CGO_ENABLED=0 go build -a \
+		--ldflags '$(FLAGS)' \
+		-installsuffix cgo \
 		-o prepaid-projector \
 		./cmd/prepaid-projector/main.go
 

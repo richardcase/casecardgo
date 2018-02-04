@@ -1,6 +1,15 @@
-FROM scratch
-ADD prepaid-svc /
-ENTRYPOINT ["/prepaid-svc"]
+# Build stage
+FROM golang:1.9 as builder
+WORKDIR /go/src/github.com/richardcase/casecardgo
+ADD . .
+RUN make setup && make build-prod
+
+# Final Stage
+FROM alpine:latest
+RUN apk --no-cache add ca-certificates
+
+COPY --from=builder /go/src/github.com/richardcase/casecardgo/prepaid-svc /app/prepaid-svc
+ENTRYPOINT /app/prepaid-svc
 
 # Build-time metadata as defined at http://label-schema.org
 ARG BUILD_DATE
