@@ -32,9 +32,9 @@ func main() {
 }
 
 func dumpConfig() {
-	glog.V(2).Infof("Mongo URL = %s", mongoURL)
-	glog.V(2).Infof("NATS URL = %s", natsURL)
-	glog.V(2).Infof("Listen Addr = %s", listenAddress)
+	glog.Infof("Mongo URL = %s", mongoURL)
+	glog.Infof("NATS URL = %s", natsURL)
+	glog.Infof("Listen Addr = %s", listenAddress)
 }
 
 func init() {

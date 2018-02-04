@@ -1,19 +1,40 @@
-version: "2"
+version: "3"
 
 services:
   prepaid-svc:
-    image: richardcase/casecardgo-prepaidsvc
-    networks:
-      - backend
+    image: richardcase/casecardgo-prepaidsvc:latest
+    entrypoint:
+      - /app/prepaid-svc
+      - -mongourl 
+      - mongo:27107
+      - -natsurl 
+      - nats://nats:4222
+      - -alsologtostderr
+      - -stderrthreshold 
+      - INFO
+      - -v
+      - "2"
+    ports:
+      - "8080:8080"
     depends_on:
       - nats
       - mongo
   
   projection-svc:
-    image: richardcase/casecardgo-projsvc
-    networks:
-      - backend
-      - frontend
+    image: richardcase/casecardgo-projsvc:latest
+    entrypoint:
+      - /app/prepaid-projector
+      - -mongourl 
+      - mongo:27107
+      - -natsurl 
+      - nats://nats:4222
+      - -alsologtostderr
+      - -stderrthreshold 
+      - INFO
+      - -v
+      - "2"
+    ports:
+      - "8081:8081"
     depends_on:
       - nats
       - mongo
@@ -24,16 +45,8 @@ services:
       - "4222:4222"
       - "6222:6222"
       - "8222:8222"
-    networks:
-      - backend
 
   mongo:
     image: mongo
     ports:
       - "27017:27017"
-    networks:
-      - backend
-
-networks:
-  backend:
-  frontend:
