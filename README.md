@@ -12,10 +12,10 @@ docker-compose up
 Then use the postman collection file in the artefacts folder.
 
 ## NATS Endpoints
-http://localhost:8222/varz
-http://localhost:8222/connz
-http://localhost:8222/subscriptionsz
-http://localhost:8222/routez
+- http://localhost:8222/varz
+- http://localhost:8222/connz
+- http://localhost:8222/subscriptionsz
+- http://localhost:8222/routez
 
 ## Scratch
 
