@@ -1,5 +1,5 @@
 FROM scratch
-ADD prepaid-svc  /prepaid-svc
+ADD prepaid-svc /
 ENTRYPOINT ["/prepaid-svc"]
 
 # Build-time metadata as defined at http://label-schema.org

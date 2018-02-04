@@ -1,5 +1,5 @@
 FROM scratch
-ADD prepaid-projector /prepaid-projector
+ADD prepaid-projector /
 ENTRYPOINT ["/prepaid-projector"]
 
 # Build-time metadata as defined at http://label-schema.org
