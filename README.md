@@ -1,4 +1,4 @@
-# CaseCard In Go
+# CaseCard In Go [![Build Status](https://travis-ci.org/richardcase/casecardgo.svg?branch=master)](https://travis-ci.org/richardcase/casecardgo)
 
 A sample prepaid card written in Go. Its very rough and ready!!!
 
