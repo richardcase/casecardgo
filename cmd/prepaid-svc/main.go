@@ -20,6 +20,7 @@ func main() {
 
 	glog.Info("Starting prepaid card service.....")
 	version.OutputVersion()
+	dumpConfig()
 
 	stopCH := signals.SetupSignalHandler()
 
@@ -31,6 +32,12 @@ func main() {
 	if err := prepaidSvc.Run(listenAddress, stopCH); err != nil {
 		glog.Fatalf("Error running prepaid service: %s", err.Error())
 	}
+}
+
+func dumpConfig() {
+	glog.V(2).Infof("Mongo URL = %s", mongoURL)
+	glog.V(2).Infof("NATS URL = %s", natsURL)
+	glog.V(2).Infof("Listen Addr = %s", listenAddress)
 }
 
 func init() {

@@ -9,14 +9,28 @@
         "type": "go",
         "request": "launch",
         "mode": "debug",
-        "program": "${workspaceRoot}/cmd/prepaid-svc"
+        "program": "${workspaceRoot}/cmd/prepaid-svc",
+        "args": [
+            "-stderrthreshold",
+            "INFO",
+            "-alsologtostderr",
+            "-v",
+            "2"
+        ]
     },
     {
         "name": "Launch Projection Svc",
         "type": "go",
         "request": "launch",
         "mode": "debug",
-        "program": "${workspaceRoot}/cmd/prepaid-projector"
+        "program": "${workspaceRoot}/cmd/prepaid-projector",
+        "args": [
+            "-stderrthreshold",
+            "INFO",
+            "-alsologtostderr",
+            "-v",
+            "2"
+        ]
     }
     ]
 }

@@ -13,7 +13,7 @@ var GitHash string
 
 // OutputVersion writes the version information to the log
 func OutputVersion() {
-	glog.Info("Version: %s\n", Version)
-	glog.Info("Buld Date: %s\n", BuildDate)
-	glog.Info("Git Hash: %s\n", GitHash)
+	glog.Infof("Version: %s\n", Version)
+	glog.Infof("Buld Date: %s\n", BuildDate)
+	glog.Infof("Git Hash: %s\n", GitHash)
 }

@@ -19,6 +19,7 @@ func main() {
 
 	glog.Info("Starting prepaid card projection service.....")
 	version.OutputVersion()
+	dumpConfig()
 
 	projectionSvc, err := service.NewProjectionService(mongoURL, natsURL)
 	if err != nil {
@@ -28,6 +29,12 @@ func main() {
 	if err := projectionSvc.Run(listenAddress); err != nil {
 		glog.Fatalf("Error running projections service: %s", err.Error())
 	}
+}
+
+func dumpConfig() {
+	glog.V(2).Infof("Mongo URL = %s", mongoURL)
+	glog.V(2).Infof("NATS URL = %s", natsURL)
+	glog.V(2).Infof("Listen Addr = %s", listenAddress)
 }
 
 func init() {
